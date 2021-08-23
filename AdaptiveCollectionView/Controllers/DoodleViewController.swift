@@ -35,7 +35,7 @@ class DoodleViewController: UIViewController {
             switch self {
             case .office: return 1
             case .kitchen: return 2
-            case .macbook: return 4
+            case .macbook: return 2
             }
         }
         
@@ -52,7 +52,7 @@ class DoodleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Doodle Fun"
+        title = "Adaptive"
         
         collectionView.dataSource = dataSource
         collectionView.collectionViewLayout = createMultiGridLayout()
@@ -98,7 +98,17 @@ class DoodleViewController: UIViewController {
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(sectionIndex == 0 ? 200: 80.0))
+            var groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(200))
+            
+            
+            // Spacing CollectionView section Row
+            if sectionIndex == 0 {
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(sectionIndex == 0 ? 200:80))
+            } else if sectionIndex == 1 {
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(sectionIndex == 1 ? 150:80))
+            } else if sectionIndex == 2 {
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(sectionIndex == 2 ? 110:80))
+            }
             
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
@@ -108,6 +118,8 @@ class DoodleViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             
             if sectionIndex == 0 {
+                section.orthogonalScrollingBehavior = .continuous
+            } else if sectionIndex == 1 {
                 section.orthogonalScrollingBehavior = .continuous
             }
 
